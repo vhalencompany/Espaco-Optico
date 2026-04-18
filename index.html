@@ -78,28 +78,6 @@
     .hero h1{font-family:var(--font-head);font-size:clamp(36px,5vw,62px);font-weight:900;color:#fff;line-height:1.08;margin-bottom:20px;letter-spacing:-1px;text-shadow:0 2px 24px rgba(0,0,0,.5)}
     .hero h1 .acc{color:var(--red)}
     .hero h1 .ol{-webkit-text-stroke:2px rgba(255,255,255,.75);color:transparent}
-
-    /* ROTATING TEXT */
-    .h1-rotate-wrap{display:inline-flex;align-items:baseline;gap:0;white-space:nowrap}
-    .rotating-word{
-      display:inline-flex;flex-wrap:nowrap;align-items:center;
-      background:var(--red);color:#fff;
-      padding:2px 16px 6px;border-radius:8px;
-      font-style:italic;letter-spacing:-.5px;
-      position:relative;overflow:hidden;
-      min-width:200px;height:1.2em;
-      vertical-align:baseline;margin-left:6px;
-    }
-    .rc{
-      display:inline-block;
-      animation-fill-mode:both;
-      animation-timing-function:cubic-bezier(0.22,1,0.36,1);
-      animation-duration:.42s;
-    }
-    .rc.enter{animation-name:rc-in}
-    .rc.exit{animation-name:rc-out;position:absolute}
-    @keyframes rc-in{from{transform:translateY(105%);opacity:0}to{transform:translateY(0);opacity:1}}
-    @keyframes rc-out{from{transform:translateY(0);opacity:1}to{transform:translateY(-115%);opacity:0}}
     .hero-desc{font-size:16px;font-weight:400;color:rgba(255,255,255,.88);line-height:1.8;margin-bottom:32px;max-width:480px;text-shadow:0 1px 12px rgba(0,0,0,.6)}
     .hero-proof{display:flex;align-items:center;gap:16px;margin-bottom:32px}
     .proof-avs{display:flex}
@@ -152,7 +130,69 @@
     .benef-title{font-family:var(--font-head);font-size:17px;font-weight:700;color:var(--dark);margin-bottom:8px}
     .benef-desc{font-size:14px;color:var(--gray-600);line-height:1.7}
 
-    /* OFERTA */
+    /* =============================================
+       STICKY OVERLAP — efeito de profundidade entre seções
+       Cada seção sobe por cima da anterior como camadas em Z
+    ============================================= */
+
+    /* Wrapper que empilha as seções */
+    .stack-wrap{
+      position: relative;
+      isolation: isolate;
+    }
+
+    /* Cada seção stackable */
+    .stack-sec {
+      position: sticky;
+      top: 0;
+      /* border-radius no topo cria a ilusão de cartão subindo */
+      border-radius: 24px 24px 0 0;
+      /* sombra para profundidade real */
+      box-shadow:
+        0 -8px 40px rgba(0,0,0,.28),
+        0 -2px 0px rgba(255,255,255,.04);
+      /* garante que o conteúdo interno não vaze o radius */
+      overflow: hidden;
+      /* z-index cresce a cada seção — a nova fica acima */
+      z-index: var(--z, 1);
+      /* clip para o canvas WebGL não vazar */
+      will-change: transform;
+    }
+
+    /* Remove border-radius da primeira (vem direto do Hero) */
+    .stack-sec:first-child {
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    /* Ajuste de padding-top para compensar o sticky */
+    .stack-sec.sec { padding-top: 96px; }
+
+    /* Galeria não tem padding-top padrão */
+    .stack-sec.galeria { padding-top: 0; }
+
+    /* Sombra mais intensa em seções claras sobre escuras */
+    .stack-sec.over-dark {
+      box-shadow:
+        0 -12px 48px rgba(0,0,0,.45),
+        0 -1px 0px rgba(255,255,255,.06);
+    }
+
+    @media(max-width:768px){
+      .stack-sec { border-radius: 16px 16px 0 0; }
+    }
+
+    .galeria{background:var(--dark-2);padding:80px 0 0}
+    .galeria>div{padding:0 56px}
+    .galeria .sec-title{color:#fff}
+    .galeria .eyebrow{color:var(--red)}
+    .galeria .sec-sub{color:rgba(255,255,255,.4)}
+    .circular-gallery{width:100%;height:500px;overflow:hidden;cursor:grab;position:relative}
+    .circular-gallery:active{cursor:grabbing}
+    @media(max-width:768px){
+      .circular-gallery{height:340px}
+      .galeria>div{padding:0 20px}
+    }
     .oferta{background:var(--dark);overflow:hidden;position:relative}
     .oferta>*:not(.irid-canvas){position:relative;z-index:1}
     .oferta-bg{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(-45deg,transparent,transparent 80px,rgba(227,6,19,.025) 80px,rgba(227,6,19,.025) 81px);opacity:.15;z-index:1}
@@ -326,12 +366,7 @@
   <div class="hero-ring hero-r3"></div>
   <div class="hero-content">
     <div class="hero-badge sr d1"><div class="badge-pulse"></div><span>Óptica Premium · Alagoas</span></div>
-    <h1 class="sr d2">
-      Ver bem é seu direito.<br>
-      <span class="h1-rotate-wrap">
-        <span class="ol">Seu </span><span id="rotating-word" class="rotating-word" aria-live="polite" aria-atomic="true"></span>
-      </span>
-    </h1>
+    <h1 class="sr d2">Ver bem é<br><span class="acc">seu direito.</span><br><span class="ol">Seu estilo</span> também.</h1>
     <p class="hero-desc sr d3">Armações das marcas mais desejadas do mundo, lentes de alta performance e atendimento especializado. 3 unidades em Alagoas para te atender.</p>
     <div class="hero-proof sr d4">
       <div class="proof-avs">
@@ -397,8 +432,12 @@
   </div>
 </div>
 
-<!-- BENEFÍCIOS -->
-<section class="sec beneficios" id="beneficios">
+
+<!-- STACK WRAP — sticky overlap com profundidade entre seções -->
+<div class="stack-wrap">
+
+<!-- BENEFÍCIOS — z2, sobe sobre o marquee -->
+<section class="sec beneficios stack-sec over-dark" id="beneficios" style="--z:2">
   <div style="max-width:1160px;margin:0 auto">
     <div class="eyebrow sr">Por que nos escolher</div>
     <h2 class="sec-title sr d1">Sua visão merece o melhor</h2>
@@ -414,8 +453,18 @@
   </div>
 </section>
 
-<!-- OFERTA -->
-<section class="sec oferta" id="oferta">
+<!-- GALERIA CIRCULAR — z3 -->
+<section class="sec galeria stack-sec" id="galeria" style="--z:3">
+  <div style="max-width:1160px;margin:0 auto 48px">
+    <div class="eyebrow sr">Nossa Coleção</div>
+    <h2 class="sec-title sr d1">Arraste e explore os modelos</h2>
+    <p class="sec-sub sr d2">Deslize para ver nossa seleção de armações premium disponíveis nas unidades.</p>
+  </div>
+  <div class="circular-gallery" id="circularGallery"></div>
+</section>
+
+<!-- OFERTA — z4 -->
+<section class="sec oferta stack-sec" id="oferta" style="--z:4">
   <canvas class="irid-canvas" id="irid-oferta"></canvas>
   <div class="oferta-bg"></div>
   <div class="oferta-inner">
@@ -440,8 +489,9 @@
   </div>
 </section>
 
-<!-- AUTORIDADE -->
-<section class="sec autoridade" id="autoridade">
+
+<!-- AUTORIDADE — z5 -->
+<section class="sec autoridade stack-sec over-dark" id="autoridade" style="--z:5">
   <div class="aut-grid">
     <div>
       <div class="eyebrow sr">Autoridade &amp; Confiança</div>
@@ -463,8 +513,9 @@
   </div>
 </section>
 
-<!-- PROVA SOCIAL -->
-<section class="sec prova" id="depoimentos">
+
+<!-- PROVA SOCIAL — z6 -->
+<section class="sec prova stack-sec" id="depoimentos" style="--z:6">
   <canvas class="irid-canvas" id="irid-depo"></canvas>
   <div style="max-width:1160px;margin:0 auto">
     <div class="eyebrow sr">Depoimentos</div>
@@ -490,8 +541,9 @@
   </div>
 </section>
 
-<!-- UNIDADES -->
-<section class="sec unidades" id="unidades">
+
+<!-- UNIDADES — z7 -->
+<section class="sec unidades stack-sec over-dark" id="unidades" style="--z:7">
   <div style="max-width:1160px;margin:0 auto">
     <div class="eyebrow sr">Nossas Unidades</div>
     <h2 class="sec-title sr d1">Estamos perto de você</h2>
@@ -571,8 +623,9 @@
   </div>
 </section>
 
-<!-- CTA FINAL -->
-<div class="cta-final">
+
+<!-- CTA FINAL — z8 -->
+<div class="cta-final stack-sec" id="cta" style="--z:8">
   <div class="cta-final-bg"></div>
   <div class="cta-final-inner">
     <div class="eyebrow sr" style="color:rgba(255,255,255,.6)">Pronto para começar?</div>
@@ -587,6 +640,9 @@
     </div>
   </div>
 </div>
+
+
+</div><!-- /stack-wrap -->
 
 <!-- FOOTER -->
 <footer>
@@ -638,6 +694,246 @@
 <a href="https://wa.me/5582999128550" target="_blank" class="wpp-fab" title="WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
 </a>
+
+<!-- OGL — usado pelo CircularGallery -->
+<script type="module">
+import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/src/index.js';
+
+// ─── CIRCULAR GALLERY — porta vanilla do ReactBits ───────────────
+function lerp(p1, p2, t) { return p1 + (p2 - p1) * t; }
+function debounce(fn, wait) {
+  let t; return function(...a) { clearTimeout(t); t = setTimeout(() => fn.apply(this,a), wait); };
+}
+
+function createTextTexture(gl, text, font, color) {
+  const c = document.createElement('canvas');
+  const ctx = c.getContext('2d');
+  ctx.font = font;
+  const m = ctx.measureText(text);
+  c.width  = Math.ceil(m.width) + 20;
+  c.height = Math.ceil(parseInt(font,10) * 1.2) + 20;
+  ctx.font = font; ctx.fillStyle = color;
+  ctx.textBaseline = 'middle'; ctx.textAlign = 'center';
+  ctx.fillText(text, c.width/2, c.height/2);
+  const tex = new Texture(gl, { generateMipmaps: false });
+  tex.image = c;
+  return { texture: tex, width: c.width, height: c.height };
+}
+
+class Title {
+  constructor({ gl, plane, renderer, text, textColor = '#ffffff', font = 'bold 24px Montserrat,sans-serif' }) {
+    this.gl = gl; this.plane = plane; this.renderer = renderer;
+    this.text = text; this.textColor = textColor; this.font = font;
+    this._build();
+  }
+  _build() {
+    const { texture, width, height } = createTextTexture(this.gl, this.text, this.font, this.textColor);
+    const geo = new Plane(this.gl);
+    const prog = new Program(this.gl, {
+      vertex: `attribute vec3 position;attribute vec2 uv;uniform mat4 modelViewMatrix;uniform mat4 projectionMatrix;varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+      fragment: `precision highp float;uniform sampler2D tMap;varying vec2 vUv;void main(){vec4 c=texture2D(tMap,vUv);if(c.a<0.1)discard;gl_FragColor=c;}`,
+      uniforms: { tMap: { value: texture } }, transparent: true
+    });
+    this.mesh = new Mesh(this.gl, { geometry: geo, program: prog });
+    const aspect = width / height;
+    const th = this.plane.scale.y * 0.13;
+    this.mesh.scale.set(th * aspect, th, 1);
+    this.mesh.position.y = -this.plane.scale.y * 0.5 - th * 0.5 - 0.05;
+    this.mesh.setParent(this.plane);
+  }
+}
+
+class Media {
+  constructor({ geometry, gl, image, index, length, renderer, scene, screen, text, viewport, bend, textColor, borderRadius, font }) {
+    this.extra = 0;
+    Object.assign(this, { geometry, gl, image, index, length, renderer, scene, screen, text, viewport, bend, textColor, borderRadius, font });
+    this._shader(); this._mesh(); this._title(); this.onResize();
+  }
+  _shader() {
+    const tex = new Texture(this.gl, { generateMipmaps: true });
+    this.program = new Program(this.gl, {
+      depthTest: false, depthWrite: false,
+      vertex: `precision highp float;attribute vec3 position;attribute vec2 uv;uniform mat4 modelViewMatrix;uniform mat4 projectionMatrix;uniform float uTime;uniform float uSpeed;varying vec2 vUv;void main(){vUv=uv;vec3 p=position;p.z=(sin(p.x*4.+uTime)*1.5+cos(p.y*2.+uTime)*1.5)*(0.1+uSpeed*0.5);gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`,
+      fragment: `precision highp float;uniform vec2 uImageSizes;uniform vec2 uPlaneSizes;uniform sampler2D tMap;uniform float uBorderRadius;varying vec2 vUv;float rSDF(vec2 p,vec2 b,float r){vec2 d=abs(p)-b;return length(max(d,vec2(0.)))+min(max(d.x,d.y),0.)-r;}void main(){vec2 ratio=vec2(min((uPlaneSizes.x/uPlaneSizes.y)/(uImageSizes.x/uImageSizes.y),1.),min((uPlaneSizes.y/uPlaneSizes.x)/(uImageSizes.y/uImageSizes.x),1.));vec2 uv=vec2(vUv.x*ratio.x+(1.-ratio.x)*.5,vUv.y*ratio.y+(1.-ratio.y)*.5);vec4 col=texture2D(tMap,uv);float d=rSDF(vUv-.5,vec2(.5-uBorderRadius),uBorderRadius);float a=1.-smoothstep(-.002,.002,d);gl_FragColor=vec4(col.rgb,a);}`,
+      uniforms: {
+        tMap: { value: tex },
+        uPlaneSizes: { value: [0,0] },
+        uImageSizes: { value: [0,0] },
+        uSpeed: { value: 0 },
+        uTime: { value: 100*Math.random() },
+        uBorderRadius: { value: this.borderRadius }
+      },
+      transparent: true
+    });
+    const img = new Image(); img.crossOrigin = 'anonymous'; img.src = this.image;
+    img.onload = () => { tex.image = img; this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight]; };
+  }
+  _mesh() {
+    this.plane = new Mesh(this.gl, { geometry: this.geometry, program: this.program });
+    this.plane.setParent(this.scene);
+  }
+  _title() {
+    this.title = new Title({ gl: this.gl, plane: this.plane, renderer: this.renderer, text: this.text, textColor: this.textColor, font: this.font });
+  }
+  update(scroll, direction) {
+    this.plane.position.x = this.x - scroll.current - this.extra;
+    const x = this.plane.position.x, H = this.viewport.width / 2;
+    if (this.bend === 0) { this.plane.position.y = 0; this.plane.rotation.z = 0; }
+    else {
+      const R = (H*H + this.bend*this.bend) / (2*Math.abs(this.bend));
+      const ex = Math.min(Math.abs(x), H);
+      const arc = R - Math.sqrt(R*R - ex*ex);
+      if (this.bend > 0) { this.plane.position.y = -arc; this.plane.rotation.z = -Math.sign(x)*Math.asin(ex/R); }
+      else { this.plane.position.y = arc; this.plane.rotation.z = Math.sign(x)*Math.asin(ex/R); }
+    }
+    this.program.uniforms.uTime.value += 0.04;
+    this.program.uniforms.uSpeed.value = scroll.current - scroll.last;
+    const po = this.plane.scale.x/2, vo = this.viewport.width/2;
+    this.isBefore = this.plane.position.x + po < -vo;
+    this.isAfter  = this.plane.position.x - po >  vo;
+    if (direction==='right' && this.isBefore) { this.extra -= this.widthTotal; this.isBefore = this.isAfter = false; }
+    if (direction==='left'  && this.isAfter)  { this.extra += this.widthTotal; this.isBefore = this.isAfter = false; }
+  }
+  onResize({ screen, viewport } = {}) {
+    if (screen) this.screen = screen;
+    if (viewport) this.viewport = viewport;
+    this.scale = this.screen.height / 1500;
+    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
+    this.plane.scale.x = (this.viewport.width  * (700 * this.scale)) / this.screen.width;
+    this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
+    this.padding = 2; this.width = this.plane.scale.x + this.padding;
+    this.widthTotal = this.width * this.length;
+    this.x = this.width * this.index;
+  }
+}
+
+class GalleryApp {
+  constructor(container, { items, bend=1, textColor='#ffffff', borderRadius=0.05, font='bold 24px Montserrat,sans-serif', scrollSpeed=2, scrollEase=0.05 }={}) {
+    this.container = container; this.scrollSpeed = scrollSpeed;
+    this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
+    this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
+    this._renderer(); this._camera(); this._scene(); this.onResize();
+    this._geometry(); this._medias(items, bend, textColor, borderRadius, font);
+    this._loop(); this._events();
+  }
+  _renderer() {
+    this.renderer = new Renderer({ alpha:true, antialias:true, dpr: Math.min(window.devicePixelRatio||1,2) });
+    this.gl = this.renderer.gl; this.gl.clearColor(0,0,0,0);
+    this.container.appendChild(this.gl.canvas);
+  }
+  _camera() {
+    this.camera = new Camera(this.gl);
+    this.camera.fov = 45; this.camera.position.z = 20;
+  }
+  _scene() { this.scene = new Transform(); }
+  _geometry() { this.geo = new Plane(this.gl, { heightSegments:50, widthSegments:100 }); }
+  _medias(items, bend, textColor, borderRadius, font) {
+    // Imagens de óculos reais via Unsplash (sem autenticação necessária)
+    const defaults = [
+      { image:'https://images.unsplash.com/photo-1591076482161-42ce6da69f67?w=800&q=80', text:'Armani Exchange' },
+      { image:'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=800&q=80', text:'Vogue Eyewear' },
+      { image:'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80', text:'Guess' },
+      { image:'https://images.unsplash.com/photo-1577803645773-f96470509666?w=800&q=80', text:'Pierre Cardim' },
+      { image:'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80', text:'Infinito' },
+      { image:'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80', text:'Solar Premium' },
+      { image:'https://images.unsplash.com/photo-1508296695146-257a814070b4?w=800&q=80', text:'Lentes de Contato' },
+      { image:'https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=800&q=80', text:'Alta Performance' },
+    ];
+    const src = (items && items.length) ? items : defaults;
+    const all = src.concat(src);
+    this.medias = all.map((d, i) => new Media({
+      geometry: this.geo, gl: this.gl, image: d.image, index: i,
+      length: all.length, renderer: this.renderer, scene: this.scene,
+      screen: this.screen, text: d.text, viewport: this.viewport,
+      bend, textColor, borderRadius, font
+    }));
+  }
+  onTouchDown(e) { this.isDown=true; this.scroll.position=this.scroll.current; this.start=e.touches?e.touches[0].clientX:e.clientX; }
+  onTouchMove(e) {
+    if (!this.isDown) return;
+    const x = e.touches?e.touches[0].clientX:e.clientX;
+    this.scroll.target = this.scroll.position + (this.start-x)*(this.scrollSpeed*0.025);
+  }
+  onTouchUp() { this.isDown=false; this.onCheck(); }
+  onWheel(e) {
+    // Só ativa o scroll da galeria quando o cursor está sobre ela
+    if (!this.container.matches(':hover')) return;
+    e.preventDefault();
+    const d = e.deltaY||e.wheelDelta||e.detail;
+    this.scroll.target += (d>0?this.scrollSpeed:-this.scrollSpeed)*0.2;
+    this.onCheckDebounce();
+  }
+  onCheck() {
+    if (!this.medias||!this.medias[0]) return;
+    const w = this.medias[0].width;
+    const idx = Math.round(Math.abs(this.scroll.target)/w);
+    const item = w*idx;
+    this.scroll.target = this.scroll.target<0?-item:item;
+  }
+  onResize() {
+    this.screen = { width: this.container.clientWidth, height: this.container.clientHeight };
+    this.renderer.setSize(this.screen.width, this.screen.height);
+    this.camera.perspective({ aspect: this.screen.width/this.screen.height });
+    const fov = (this.camera.fov*Math.PI)/180;
+    const h = 2*Math.tan(fov/2)*this.camera.position.z;
+    this.viewport = { width: h*(this.screen.width/this.screen.height), height: h };
+    this.medias?.forEach(m => m.onResize({ screen: this.screen, viewport: this.viewport }));
+  }
+  _loop() {
+    this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
+    const dir = this.scroll.current > this.scroll.last ? 'right' : 'left';
+    this.medias?.forEach(m => m.update(this.scroll, dir));
+    this.renderer.render({ scene: this.scene, camera: this.camera });
+    this.scroll.last = this.scroll.current;
+    this.raf = requestAnimationFrame(this._loop.bind(this));
+  }
+  _events() {
+    this._rz = this.onResize.bind(this);
+    this._wh = this.onWheel.bind(this);
+    this._td = this.onTouchDown.bind(this);
+    this._tm = this.onTouchMove.bind(this);
+    this._tu = this.onTouchUp.bind(this);
+    window.addEventListener('resize', this._rz);
+    this.container.addEventListener('wheel', this._wh, { passive: false });
+    window.addEventListener('mousedown', this._td);
+    window.addEventListener('mousemove', this._tm);
+    window.addEventListener('mouseup', this._tu);
+    this.container.addEventListener('touchstart', this._td, { passive: true });
+    this.container.addEventListener('touchmove', this._tm, { passive: true });
+    this.container.addEventListener('touchend', this._tu);
+  }
+  destroy() {
+    cancelAnimationFrame(this.raf);
+    window.removeEventListener('resize', this._rz);
+    window.removeEventListener('mousedown', this._td);
+    window.removeEventListener('mousemove', this._tm);
+    window.removeEventListener('mouseup', this._tu);
+    this.gl.canvas.parentNode?.removeChild(this.gl.canvas);
+  }
+}
+
+// Iniciar galeria quando a seção entrar na viewport (lazy)
+const galleryContainer = document.getElementById('circularGallery');
+if (galleryContainer) {
+  let galleryApp = null;
+  const galleryObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !galleryApp) {
+        galleryApp = new GalleryApp(galleryContainer, {
+          bend: 1,
+          textColor: '#ffffff',
+          borderRadius: 0.05,
+          scrollSpeed: 2,
+          scrollEase: 0.05,
+          font: 'bold 22px Montserrat,sans-serif'
+        });
+        galleryObs.disconnect();
+      }
+    });
+  }, { threshold: 0.1 });
+  galleryObs.observe(galleryContainer);
+}
+</script>
 
 <script>
   // ─── NAVBAR ───────────────────────────────────────────────
@@ -954,78 +1250,6 @@
     color2: [0.05, 0.03,  0.04 ],
     color3: [0.30, 0.008, 0.025],
   });
-  // ── ROTATING TEXT — vanilla port do ReactBits RotatingText ───
-  (function() {
-    const WORDS   = ['Estilo.', 'Visão.', 'Saúde.', 'Conforto.', 'Qualidade.'];
-    const INTERVAL = 2400;   // ms entre trocas
-    const STAGGER  = 0.030;  // segundos de delay por caractere
-    const container = document.getElementById('rotating-word');
-    if (!container) return;
-
-    let current = 0;
-    let busy    = false;
-
-    function splitChars(text) {
-      // Usa Intl.Segmenter quando disponível (suporte a emoji/unicode)
-      if (typeof Intl !== 'undefined' && Intl.Segmenter) {
-        const seg = new Intl.Segmenter('pt', { granularity: 'grapheme' });
-        return Array.from(seg.segment(text), s => s.segment);
-      }
-      return Array.from(text);
-    }
-
-    function buildSpans(chars, cls) {
-      return chars.map((ch, i) => {
-        const s = document.createElement('span');
-        s.className = 'rc ' + cls;
-        s.textContent = ch === ' ' ? '\u00A0' : ch;
-        // stagger: entrada da esquerda, saída da direita (like staggerFrom: last)
-        const delay = cls === 'enter'
-          ? i * STAGGER
-          : (chars.length - 1 - i) * STAGGER;
-        s.style.animationDelay = delay + 's';
-        return s;
-      });
-    }
-
-    function showWord(word) {
-      if (busy) return;
-      busy = true;
-
-      const chars = splitChars(word);
-      const totalDuration = (chars.length - 1) * STAGGER * 1000 + 420;
-
-      // Animar saída dos spans existentes
-      const existing = Array.from(container.querySelectorAll('.rc.enter'));
-      existing.forEach((s, i) => {
-        s.classList.replace('enter', 'exit');
-        const delay = (existing.length - 1 - i) * STAGGER;
-        s.style.animationDelay = delay + 's';
-      });
-
-      // Após a saída terminar, colocar novos chars
-      const exitDuration = existing.length > 0
-        ? (existing.length - 1) * STAGGER * 1000 + 420
-        : 0;
-
-      setTimeout(() => {
-        container.innerHTML = '';
-        const spans = buildSpans(chars, 'enter');
-        spans.forEach(s => container.appendChild(s));
-        // Libera após entrada completar
-        setTimeout(() => { busy = false; }, totalDuration + 50);
-      }, exitDuration);
-    }
-
-    // Mostra primeira palavra imediatamente
-    showWord(WORDS[current]);
-
-    // Avança automaticamente
-    setInterval(() => {
-      current = (current + 1) % WORDS.length;
-      showWord(WORDS[current]);
-    }, INTERVAL);
-  })();
 </script>
 </body>
 </html>
