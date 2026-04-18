@@ -131,55 +131,37 @@
     .benef-desc{font-size:14px;color:var(--gray-600);line-height:1.7}
 
     /* =============================================
-       STICKY OVERLAP — efeito de profundidade entre seções
-       Cada seção sobe por cima da anterior como camadas em Z
+       STACK OVERLAP — profundidade entre seções
+       Efeito visual de cartão empilhado sem sticky
     ============================================= */
+    .stack-wrap { position: relative; }
 
-    /* Wrapper que empilha as seções */
-    .stack-wrap{
-      position: relative;
-      isolation: isolate;
-    }
-
-    /* Cada seção stackable */
     .stack-sec {
-      position: sticky;
-      top: 0;
-      /* border-radius no topo cria a ilusão de cartão subindo */
       border-radius: 24px 24px 0 0;
-      /* sombra para profundidade real */
       box-shadow:
-        0 -8px 40px rgba(0,0,0,.28),
-        0 -2px 0px rgba(255,255,255,.04);
-      /* garante que o conteúdo interno não vaze o radius */
+        0 -12px 48px rgba(0,0,0,.32),
+        0 -1px 0 rgba(255,255,255,.05);
       overflow: hidden;
-      /* z-index cresce a cada seção — a nova fica acima */
+      position: relative;
       z-index: var(--z, 1);
-      /* clip para o canvas WebGL não vazar */
-      will-change: transform;
+      /* Margem negativa — cada seção "morde" a anterior em 24px */
+      margin-top: -24px;
     }
 
-    /* Remove border-radius da primeira (vem direto do Hero) */
     .stack-sec:first-child {
       border-radius: 0;
       box-shadow: none;
+      margin-top: 0;
     }
 
-    /* Ajuste de padding-top para compensar o sticky */
-    .stack-sec.sec { padding-top: 96px; }
-
-    /* Galeria não tem padding-top padrão */
-    .stack-sec.galeria { padding-top: 0; }
-
-    /* Sombra mais intensa em seções claras sobre escuras */
     .stack-sec.over-dark {
       box-shadow:
-        0 -12px 48px rgba(0,0,0,.45),
-        0 -1px 0px rgba(255,255,255,.06);
+        0 -16px 56px rgba(0,0,0,.5),
+        0 -1px 0 rgba(255,255,255,.07);
     }
 
     @media(max-width:768px){
-      .stack-sec { border-radius: 16px 16px 0 0; }
+      .stack-sec { border-radius: 16px 16px 0 0; margin-top: -16px; }
     }
 
     .galeria{background:var(--dark-2);padding:80px 0 0}
