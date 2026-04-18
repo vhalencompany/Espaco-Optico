@@ -41,7 +41,29 @@
     .nav-logo-circle{width:40px;height:40px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:20px;font-weight:800;color:#fff;letter-spacing:-1px;flex-shrink:0}
     .nav-logo-text{line-height:1.15}
     .nav-logo-name{font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--dark);letter-spacing:.2px}
-    .nav-logo-sub{font-size:9.5px;font-weight:500;color:var(--red);letter-spacing:2.5px;text-transform:uppercase}
+    .nav-logo-sub{font-size:10px;font-weight:700;color:var(--red);letter-spacing:3px;text-transform:uppercase;opacity:1}
+
+    /* SHINY TEXT — porta vanilla do ReactBits ShinyText */
+    @keyframes shine-sweep {
+      0%   { background-position: 150% center; }
+      100% { background-position: -50% center; }
+    }
+    .shiny-text {
+      display: inline;
+      background-image: linear-gradient(
+        120deg,
+        #fff  0%,
+        #fff  38%,
+        #E30613 50%,
+        #fff  62%,
+        #fff 100%
+      );
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine-sweep 3.5s linear infinite;
+    }
     .nav-links{display:flex;align-items:center;gap:32px}
     .nav-links a{font-size:13px;font-weight:500;color:var(--gray-600);transition:color .2s;position:relative}
     .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;right:100%;height:1.5px;background:var(--red);transition:right .25s var(--ease)}
@@ -74,7 +96,7 @@
     .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(227,6,19,.14);border:1px solid rgba(227,6,19,.35);padding:6px 16px;border-radius:100px;margin-bottom:28px}
     .badge-pulse{width:7px;height:7px;border-radius:50%;background:var(--red-mid);animation:pulse 2s ease-in-out infinite}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
-    .hero-badge span{font-size:11px;font-weight:600;color:#FF9098;letter-spacing:2px;text-transform:uppercase;font-family:var(--font-head)}
+    .hero-badge span{font-size:11px;font-weight:600;color:#ffffff;letter-spacing:2px;text-transform:uppercase;font-family:var(--font-head)}
     .hero h1{font-family:var(--font-head);font-size:clamp(36px,5vw,62px);font-weight:900;color:#fff;line-height:1.08;margin-bottom:20px;letter-spacing:-1px;text-shadow:0 2px 24px rgba(0,0,0,.5)}
     .hero h1 .acc{color:var(--red)}
     .hero h1 .ol{-webkit-text-stroke:2px rgba(255,255,255,.75);color:transparent}
@@ -106,12 +128,15 @@
     .mq-row.rev .mq-group{animation-direction:reverse;animation-delay:-6s}
     @keyframes mq-x{from{transform:translateX(var(--scroll-start))}to{transform:translateX(var(--scroll-end))}}
     @media(prefers-reduced-motion:reduce){.mq-group{animation-play-state:paused}}
-    .mq-card{display:flex;align-items:center;gap:12px;flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:var(--r-md);padding:16px 28px;transition:background .25s,border-color .25s}
-    .mq-card:hover{background:rgba(227,6,19,.14);border-color:rgba(227,6,19,.4)}
-    .mq-icon{width:38px;height:38px;border-radius:50%;background:rgba(227,6,19,.2);border:1px solid rgba(227,6,19,.45);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:12px;font-weight:800;color:#FF9098;flex-shrink:0}
-    .mq-info{line-height:1.2}
-    .mq-name{font-family:var(--font-head);font-size:14px;font-weight:700;color:rgba(255,255,255,.88);letter-spacing:.5px;text-transform:uppercase}
-    .mq-sub{font-size:10px;color:rgba(255,255,255,.3);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+    .mq-card{display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-md);padding:16px 28px;height:80px;min-width:160px;transition:background .25s,border-color .25s,transform .2s}
+    .mq-card:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25);transform:translateY(-2px)}
+    .mq-card img{height:38px;width:auto;max-width:130px;object-fit:contain;
+      /* Inverte logos pretas para branco no fundo escuro */
+      filter:brightness(0) invert(1);
+      opacity:.85;transition:opacity .25s}
+    .mq-card:hover img{opacity:1}
+    /* Ray-Ban tem fundo vermelho — não inverte, só remove fundo */
+    .mq-card.no-invert img{filter:none;opacity:.9}
 
     /* SECTIONS */
     .sec{padding:96px 56px}
@@ -348,7 +373,7 @@
   <div class="hero-ring hero-r3"></div>
   <div class="hero-content">
     <div class="hero-badge sr d1"><div class="badge-pulse"></div><span>Óptica Premium · Alagoas</span></div>
-    <h1 class="sr d2">Ver bem é<br><span class="acc">seu direito.</span><br><span class="ol">Seu estilo</span> também.</h1>
+    <h1 class="sr d2"><span class="shiny-text">Ver bem é<br>seu direito.<br>Seu estilo também.</span></h1>
     <p class="hero-desc sr d3">Armações das marcas mais desejadas do mundo, lentes de alta performance e atendimento especializado. 3 unidades em Alagoas para te atender.</p>
     <div class="hero-proof sr d4">
       <div class="proof-avs">
@@ -381,37 +406,46 @@
   <div class="mq-track">
     <div class="mq-row">
       <div class="mq-group">
-        <div class="mq-card"><div class="mq-icon">&#8734;</div><div class="mq-info"><div class="mq-name">Infinito</div><div class="mq-sub">Eyewear</div></div></div>
-        <div class="mq-card"><div class="mq-icon">PC</div><div class="mq-info"><div class="mq-name">Pierre Cardim</div><div class="mq-sub">Paris · Milano</div></div></div>
-        <div class="mq-card"><div class="mq-icon">V</div><div class="mq-info"><div class="mq-name">Vogue</div><div class="mq-sub">Eyewear</div></div></div>
-        <div class="mq-card"><div class="mq-icon">AX</div><div class="mq-info"><div class="mq-name">Armani Exchange</div><div class="mq-sub">Milano</div></div></div>
-        <div class="mq-card"><div class="mq-icon">G</div><div class="mq-info"><div class="mq-name">Guess</div><div class="mq-sub">Los Angeles</div></div></div>
+        <div class="mq-card"><img src="logo-pierre.webp" alt="Pierre Cardin"></div>
+        <div class="mq-card"><img src="logo-vogue.png" alt="Vogue"></div>
+        <div class="mq-card"><img src="logo-guess.png" alt="Guess"></div>
+        <div class="mq-card"><img src="logo-hugo-boss.png" alt="Hugo Boss"></div>
+        <div class="mq-card no-invert"><img src="logo-rayban.png" alt="Ray-Ban"></div>
+        <div class="mq-card"><img src="logo-tommy.jpeg" alt="Tommy Hilfiger"></div>
+        <div class="mq-card"><img src="logo-polo.jpeg" alt="Polo Ralph Lauren"></div>
       </div>
       <div class="mq-group" aria-hidden="true">
-        <div class="mq-card"><div class="mq-icon">&#8734;</div><div class="mq-info"><div class="mq-name">Infinito</div><div class="mq-sub">Eyewear</div></div></div>
-        <div class="mq-card"><div class="mq-icon">PC</div><div class="mq-info"><div class="mq-name">Pierre Cardim</div><div class="mq-sub">Paris · Milano</div></div></div>
-        <div class="mq-card"><div class="mq-icon">V</div><div class="mq-info"><div class="mq-name">Vogue</div><div class="mq-sub">Eyewear</div></div></div>
-        <div class="mq-card"><div class="mq-icon">AX</div><div class="mq-info"><div class="mq-name">Armani Exchange</div><div class="mq-sub">Milano</div></div></div>
-        <div class="mq-card"><div class="mq-icon">G</div><div class="mq-info"><div class="mq-name">Guess</div><div class="mq-sub">Los Angeles</div></div></div>
+        <div class="mq-card"><img src="logo-pierre.webp" alt="Pierre Cardin"></div>
+        <div class="mq-card"><img src="logo-vogue.png" alt="Vogue"></div>
+        <div class="mq-card"><img src="logo-guess.png" alt="Guess"></div>
+        <div class="mq-card"><img src="logo-hugo-boss.png" alt="Hugo Boss"></div>
+        <div class="mq-card no-invert"><img src="logo-rayban.png" alt="Ray-Ban"></div>
+        <div class="mq-card"><img src="logo-tommy.jpeg" alt="Tommy Hilfiger"></div>
+        <div class="mq-card"><img src="logo-polo.jpeg" alt="Polo Ralph Lauren"></div>
       </div>
     </div>
     <div class="mq-row rev">
       <div class="mq-group">
-        <div class="mq-card"><div class="mq-icon">G</div><div class="mq-info"><div class="mq-name">Guess</div><div class="mq-sub">Los Angeles</div></div></div>
-        <div class="mq-card"><div class="mq-icon">AX</div><div class="mq-info"><div class="mq-name">Armani Exchange</div><div class="mq-sub">Milano</div></div></div>
-        <div class="mq-card"><div class="mq-icon">V</div><div class="mq-info"><div class="mq-name">Vogue</div><div class="mq-sub">Eyewear</div></div></div>
-        <div class="mq-card"><div class="mq-icon">PC</div><div class="mq-info"><div class="mq-name">Pierre Cardim</div><div class="mq-sub">Paris · Milano</div></div></div>
-        <div class="mq-card"><div class="mq-icon">&#8734;</div><div class="mq-info"><div class="mq-name">Infinito</div><div class="mq-sub">Eyewear</div></div></div>
+        <div class="mq-card"><img src="logo-polo.jpeg" alt="Polo Ralph Lauren"></div>
+        <div class="mq-card"><img src="logo-tommy.jpeg" alt="Tommy Hilfiger"></div>
+        <div class="mq-card no-invert"><img src="logo-rayban.png" alt="Ray-Ban"></div>
+        <div class="mq-card"><img src="logo-hugo-boss.png" alt="Hugo Boss"></div>
+        <div class="mq-card"><img src="logo-guess.png" alt="Guess"></div>
+        <div class="mq-card"><img src="logo-vogue.png" alt="Vogue"></div>
+        <div class="mq-card"><img src="logo-pierre.webp" alt="Pierre Cardin"></div>
       </div>
       <div class="mq-group" aria-hidden="true">
-        <div class="mq-card"><div class="mq-icon">G</div><div class="mq-info"><div class="mq-name">Guess</div><div class="mq-sub">Los Angeles</div></div></div>
-        <div class="mq-card"><div class="mq-icon">AX</div><div class="mq-info"><div class="mq-name">Armani Exchange</div><div class="mq-sub">Milano</div></div></div>
-        <div class="mq-card"><div class="mq-icon">V</div><div class="mq-info"><div class="mq-name">Vogue</div><div class="mq-sub">Eyewear</div></div></div>
-        <div class="mq-card"><div class="mq-icon">PC</div><div class="mq-info"><div class="mq-name">Pierre Cardim</div><div class="mq-sub">Paris · Milano</div></div></div>
-        <div class="mq-card"><div class="mq-icon">&#8734;</div><div class="mq-info"><div class="mq-name">Infinito</div><div class="mq-sub">Eyewear</div></div></div>
+        <div class="mq-card"><img src="logo-polo.jpeg" alt="Polo Ralph Lauren"></div>
+        <div class="mq-card"><img src="logo-tommy.jpeg" alt="Tommy Hilfiger"></div>
+        <div class="mq-card no-invert"><img src="logo-rayban.png" alt="Ray-Ban"></div>
+        <div class="mq-card"><img src="logo-hugo-boss.png" alt="Hugo Boss"></div>
+        <div class="mq-card"><img src="logo-guess.png" alt="Guess"></div>
+        <div class="mq-card"><img src="logo-vogue.png" alt="Vogue"></div>
+        <div class="mq-card"><img src="logo-pierre.webp" alt="Pierre Cardin"></div>
       </div>
     </div>
   </div>
+</div>
 </div>
 
 
