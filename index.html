@@ -72,6 +72,8 @@
     .nav-cta{padding:9px 20px;background:var(--red);color:#fff!important;border-radius:var(--r-sm);font-weight:600!important;font-size:13px!important;letter-spacing:.3px;transition:background .2s!important}
     .nav-cta::after{display:none!important}
     .nav-cta:hover{background:var(--red-dark)!important}
+    .nav-cta.nav-ig{background:linear-gradient(135deg,#dd2a7b,#ea4c89,#f5855f);}
+    .nav-cta.nav-ig:hover{background:linear-gradient(135deg,#c33272,#dd4f81,#e98869)!important}
     .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
     .burger span{display:block;width:24px;height:2px;background:var(--dark);border-radius:2px;transition:transform .3s,opacity .3s}
     .mob-menu{display:none;position:fixed;top:68px;left:0;right:0;z-index:998;background:#fff;border-top:1px solid var(--gray-200);padding:24px 24px 32px;flex-direction:column;gap:18px;box-shadow:0 12px 32px rgba(0,0,0,.1)}
@@ -88,11 +90,11 @@
     .hero-r2{width:420px;height:420px;right:-60px;top:50%;transform:translateY(-50%)}
     .hero-r3{width:240px;height:240px;right:30px;top:50%;transform:translateY(-50%);border-color:rgba(227,6,19,.2)}
     .hero-content{position:relative;z-index:3;max-width:620px}
-    .hero-stats{position:relative;margin-top:40px;display:flex;align-items:stretch;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:var(--r-md);overflow:hidden}
-    .h-stat{padding:18px 26px;text-align:center}
-    .h-stat+.h-stat{border-left:1px solid rgba(255,255,255,.07)}
-    .h-stat strong{display:block;font-family:var(--font-head);font-size:24px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px}
-    .h-stat span{font-size:10px;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:1.5px;text-transform:uppercase}
+    .hero-stats{position:relative;margin-top:40px;display:flex;align-items:stretch;background:rgba(15,15,18,.72);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-xl);overflow:hidden;box-shadow:0 22px 70px rgba(0,0,0,.35);backdrop-filter:blur(18px);}
+    .h-stat{padding:24px 32px;text-align:center;min-width:140px}
+    .h-stat+.h-stat{border-left:1px solid rgba(255,255,255,.12)}
+    .h-stat strong{display:block;font-family:var(--font-head);font-size:28px;font-weight:900;color:#fff;line-height:1;margin-bottom:6px;text-shadow:0 10px 20px rgba(0,0,0,.35)}
+    .h-stat span{font-size:11px;font-weight:600;color:rgba(255,255,255,.75);letter-spacing:1.8px;text-transform:uppercase}
     .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(227,6,19,.14);border:1px solid rgba(227,6,19,.35);padding:6px 16px;border-radius:100px;margin-bottom:28px}
     .badge-pulse{width:7px;height:7px;border-radius:50%;background:var(--red-mid);animation:pulse 2s ease-in-out infinite}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
@@ -362,6 +364,7 @@
     <li><a href="#depoimentos">Depoimentos</a></li>
     <li><a href="#unidades">Unidades</a></li>
     <li><a href="https://wa.me/5582999128550" target="_blank" class="nav-cta">Fale conosco</a></li>
+    <li><a href="https://www.instagram.com/espacoopticoal/" target="_blank" class="nav-cta nav-ig">Instagram</a></li>
   </ul>
   <div class="burger" id="burger"><span></span><span></span><span></span></div>
 </nav>
@@ -371,6 +374,7 @@
   <a href="#depoimentos" class="ml">Depoimentos</a>
   <a href="#unidades" class="ml">Unidades</a>
   <a href="https://wa.me/5582999128550" target="_blank" class="nav-cta">Fale conosco</a>
+  <a href="https://www.instagram.com/espacoopticoal/" target="_blank" class="nav-cta nav-ig">Instagram</a>
 </div>
 
 <!-- HERO -->
@@ -466,7 +470,7 @@
 <section class="sec beneficios stack-sec over-dark" id="beneficios" style="--z:2">
   <div style="max-width:1160px;margin:0 auto">
     <div class="eyebrow sr">Por que nos escolher</div>
-    <h2 class="sec-title sr d1">Sua visão merece o melhor</h2>
+    <h2 class="sec-title sr d1">Sua visão <span style="color:var(--red);">merece</span> o melhor</h2>
     <p class="sec-sub sr d2">Muito além de uma ótica — uma experiência completa de cuidado visual e estilo de vida.</p>
   </div>
   <div class="benef-grid">
