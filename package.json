@@ -1,0 +1,21 @@
+{
+  "name": "espaco-optico",
+  "version": "1.0.0",
+  "description": "Espaço Óptico - Óptica Premium em Alagoas",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static HTML - no build needed'",
+    "lint": "echo 'No linter configured'"
+  },
+  "keywords": [
+    "optica",
+    "eyewear",
+    "glasses"
+  ],
+  "author": "vhalencompany",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^1.4.1"
+  }
+}
